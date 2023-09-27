@@ -6,6 +6,7 @@ import re
 import tkinter as tk #Hold up...let her cook
 
 path = os.getcwd()
+lyricgrabbing = True
 
 #Grabs information from random person generator and outputs to filetype of choice
 def lyricsGet(max_retries, retry_wait_time, artist, song): #Wait time is in seconds, "role" is type of person being generated, e.g. "employee", "customer"
@@ -35,10 +36,16 @@ def lyricsGet(max_retries, retry_wait_time, artist, song): #Wait time is in seco
         lyrics += "\n".join(word.strings)
     return(lyrics)
     
-artist = input("Artist name (please spell it right)? ")
-song = input("Song name (please also spell this right)? ")
-lyrics = lyricsGet(10, 10, artist, song)
+while lyricgrabbing == True:
+    yesOrNo = input("Grab lyrics (grab) or exit (exit)? ")
+    if yesOrNo.casefold() == "exit":
+        input("Goodbye! (press enter)")
+        exit()
+    else:
+        artist = input("Artist name (please spell it right)? ")
+        song = input("Song name (please also spell this right)? ")
+        lyrics = lyricsGet(10, 10, artist, song)
 
-with open(f"{path}\\{artist} - {song}.txt", "w") as file:
-    file.write(lyrics)
-    file.close()
+        with open(f"{path}\\{artist} - {song}.txt", "w") as file:
+            file.write(lyrics)
+            file.close()
