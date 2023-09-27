@@ -5,6 +5,8 @@ import time
 import re
 import tkinter as tk #Hold up...let her cook
 
+path = os.getcwd()
+
 #Grabs information from random person generator and outputs to filetype of choice
 def lyricsGet(max_retries, retry_wait_time, artist, song): #Wait time is in seconds, "role" is type of person being generated, e.g. "employee", "customer"
     artist = re.sub(r'[^a-zA-Z0-9\s]', '', artist).strip(" ").lower()
@@ -31,8 +33,12 @@ def lyricsGet(max_retries, retry_wait_time, artist, song): #Wait time is in seco
     lyrics = ""
     for word in lyricsContainer:
         lyrics += "\n".join(word.strings)
-    print(lyrics)
+    return(lyrics)
     
 artist = input("Artist name (please spell it right)? ")
 song = input("Song name (please also spell this right)? ")
-lyricsGet(10, 10, artist, song)
+lyrics = lyricsGet(10, 10, artist, song)
+
+with open(f"{path}\\{artist} - {song}.txt", "w") as file:
+    file.write(lyrics)
+    file.close()
