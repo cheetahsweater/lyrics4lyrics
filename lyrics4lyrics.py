@@ -10,9 +10,9 @@ lyricgrabbing = True
 
 #Grabs information from random person generator and outputs to filetype of choice
 def lyricsGet(max_retries, retry_wait_time, artist, song): #Wait time is in seconds, "role" is type of person being generated, e.g. "employee", "customer"
-    artist = re.sub(r'[^a-zA-Z0-9\s]', '', artist).strip(" ").lower()
+    artist = re.sub(r'[^a-zA-Z0-9\s-]', '', artist).strip(" ").lower()
     urlArtist = artist.replace(" ", "-")
-    song = re.sub(r'[^a-zA-Z0-9\s]', '', song).strip(" ").lower()
+    song = re.sub(r'[^a-zA-Z0-9\s-]', '', song).strip(" ").lower()
     urlSong = song.replace(" ", "-")
     for attempt in range(max_retries):
         try:
