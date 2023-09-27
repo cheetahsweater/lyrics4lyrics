@@ -33,6 +33,10 @@ def sanitize(filename):
 def lyricsGet(max_retries, retry_wait_time, artist, song): #Wait time is in seconds
     artist = re.sub(r'[^a-zA-Z0-9\s-]', '', artist).strip(" ").lower()
     urlArtist = artist.replace(" ", "-")
+    if "(Ft." in song:
+        feat = "(Ft."
+        song = song.split(feat)[0]
+        print(song)
     song = re.sub(r'[^a-zA-Z0-9\s-]', '', song).strip(" ").lower()
     urlSong = song.replace(" ", "-")
     for attempt in range(max_retries):
