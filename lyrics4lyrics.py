@@ -14,8 +14,6 @@ def lyricsGet(max_retries, retry_wait_time, artist, song): #Wait time is in seco
     urlArtist = artist.replace(" ", "-")
     song = re.sub(r'[^a-zA-Z0-9\s]', '', song).strip(" ").lower()
     urlSong = song.replace(" ", "-")
-    print(urlArtist)
-    print(urlSong)
     for attempt in range(max_retries):
         try:
             url = f'https://www.genius.com/{urlArtist}-{urlSong}-lyrics'
@@ -46,6 +44,6 @@ while lyricgrabbing == True:
         song = input("Song name (please also spell this right)? ")
         lyrics = lyricsGet(10, 10, artist, song)
 
-        with open(f"{path}\\{artist} - {song}.txt", "w") as file:
+        with open(f"{path}\\{artist} - {song}.txt", "w", encoding="utf-8") as file:
             file.write(lyrics)
             file.close()
