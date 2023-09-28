@@ -52,7 +52,7 @@ def lyricsGet(max_retries, retry_wait_time, artist, song, link=None): #Wait time
     for attempt in range(max_retries):
         try:
             if link == None:
-                url = f'https://www.genius.com/{urlArtist}-{urlSong}-balls'
+                url = f'https://www.genius.com/{urlArtist}-{urlSong}-lyrics'
             else:
                 url = link
             print(url)
