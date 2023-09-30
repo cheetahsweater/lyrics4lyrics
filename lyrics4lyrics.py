@@ -16,39 +16,50 @@ with open(f"{path}\\config.json", "r", encoding="utf-8") as file:
     print(essential) #DEBUG
     file.close()
 
+#Checks whether the "output" folder exists in program folder and creates it if not
 if essential["defaultOutputExists"] == "False":
     os.mkdir(f"{path}\\output")
     essential.update({"defaultOutputExists":"True"})
 else:
     pass
 
+#Turning on while loop variavkr 
 lyricgrabbing = True
+#Writes config back to config file (to signal that output folder is created) 
 with open(f"{path}\\config.json", "w", encoding="utf-8") as file:
     config = json.dumps(essential)
     file.write(config)
     file.close()
 
+#Formats artist, album, or song title to fit Genius URL format
+#Note for Lillith: THIS is where we will be fixing the apostrophe issue
 def urlFormat(string, stringType): #type parameters are "artist", "album", "song"
-    string = string.replace("/", " ")
+    string = string.replace("/", " ") #Gets rid of slashed, replaces with spaces
+    #Artist-specific formatting
     if stringType == "artist":
-        pass
+        pass #Placeholder; erase this when adding formatting changes
     
     #Universal formatting
-    string = re.sub(r'[^a-zA-Z0-9\s-]', '', string).strip(" ").lower()
-    urlString = string.replace(" ", "-")
+    string = re.sub(r'[^a-zA-Z0-9\s-]', '', string).strip(" ").lower() #Removes all non-alphanumeric characters besides "-"
+    urlString = string.replace(" ", "-") #Replaces all spaces with hyphens
     return urlString
 
+#Gets rid of characters that aren't filename-compatible
 def sanitize(filename):
     newFilename = re.sub(r'[\\/*?:"<>|]',"", filename)
     return newFilename
 
+#Actual lyric grabber function
 def lyricsGet(max_retries, retry_wait_time, artist, song, link=None): #Wait time is in seconds
+    #Removes feature credit if present
     if "(Ft." in song:
         feat = "(Ft."
         song = song.split(feat)[0]
         print(song) #DEBUG
+    #Formats artist and song names to fit URL
     urlArtist = urlFormat(artist, "artist")
     urlSong = urlFormat(song, "song")
+    #Try to grab HTML from lyrics page
     for attempt in range(max_retries):
         try:
             if link == None:
@@ -66,12 +77,15 @@ def lyricsGet(max_retries, retry_wait_time, artist, song, link=None): #Wait time
                 print(f"Request failed after {max_retries} attempts. Skipping word...")
                 return []
     soup = BeautifulSoup(response.content, 'html.parser')
+    #Extracts "lyric container" dividers from website
     lyricsContainer = soup.select("div[class^=Lyrics__Container]")
     lyrics = ""
+    #Joins lyric container dividers together and separates them by newlines
     for word in lyricsContainer:
         lyrics += "\n".join(word.strings)
     return lyrics
-    
+
+#Function to grab albums
 def albumGrab(max_retries, retry_wait_time, artist, album):
     urlArtist = urlFormat(artist, "artist")
     urlAlbum = urlFormat(album, "album")
