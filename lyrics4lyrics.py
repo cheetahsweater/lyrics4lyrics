@@ -23,9 +23,9 @@ if essential["defaultOutputExists"] == "False":
 else:
     pass
 
-#Turning on while loop variavkr 
+#Turning on while loop variavkr
 lyricgrabbing = True
-#Writes config back to config file (to signal that output folder is created) 
+#Writes config back to config file (to signal that output folder is created)
 with open(f"{path}\\config.json", "w", encoding="utf-8") as file:
     config = json.dumps(essential)
     file.write(config)
@@ -38,7 +38,9 @@ def urlFormat(string, stringType): #type parameters are "artist", "album", "song
     #Artist-specific formatting
     if stringType == "artist":
         pass #Placeholder; erase this when adding formatting changes
-    
+    if stringType == "album":
+        string = string.replace("'", " ") #SHOULD fix the album search for aphostrophe
+
     #Universal formatting
     string = re.sub(r'[^a-zA-Z0-9\s-]', '', string).strip(" ").lower() #Removes all non-alphanumeric characters besides "-"
     urlString = string.replace(" ", "-") #Replaces all spaces with hyphens
