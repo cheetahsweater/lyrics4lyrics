@@ -41,6 +41,10 @@ def urlFormat(string, stringType): #type parameters are "artist", "album", "song
     if stringType == "album":
         string = string.replace("'", " ") #SHOULD fix the album search for aphostrophe
         string = string.replace(" - ", " ") #fix for albums with " - " turning into "---" instead of just one space
+        string = string.replace("/", " ") #fix
+        string = string.replace("=", " ") #fix
+        string = string.replace("+", " ") #fix
+        #idk how to do it but could you help me condence these fixes if possible and maybe teach me how you did it? or we can do it in call, idc. thank you <3 ^w^
     if stringType == "song":
         string = string.replace(" - ", " ") #fix for songs with " - " turning into "---" instead of just one space
 
