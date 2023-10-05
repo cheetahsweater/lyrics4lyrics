@@ -40,6 +40,13 @@ def urlFormat(string, stringType): #type parameters are "artist", "album", "song
         pass #Placeholder; erase this when adding formatting changes
     if stringType == "album":
         string = string.replace("'", " ") #SHOULD fix the album search for aphostrophe
+        string = string.replace(" - ", " ") #fix for albums with " - " turning into "---" instead of just one space
+        string = string.replace("/", " ") #fix
+        string = string.replace("=", " ") #fix
+        string = string.replace("+", " ") #fix
+        #idk how to do it but could you help me condence these fixes if possible and maybe teach me how you did it? or we can do it in call, idc. thank you <3 ^w^
+    if stringType == "song":
+        string = string.replace(" - ", " ") #fix for songs with " - " turning into "---" instead of just one space
 
     #Universal formatting
     string = re.sub(r'[^a-zA-Z0-9\s-]', '', string).strip(" ").lower() #Removes all non-alphanumeric characters besides "-"
@@ -94,6 +101,7 @@ def albumGrab(max_retries, retry_wait_time, artist, album):
     for attempt in range(max_retries):
         try:
             url = f'https://www.genius.com/albums/{urlArtist}/{urlAlbum}'
+            print(url) #DEBUG helps with seeing the URL in case of errors
             response = requests.get(url)
             break
         except requests.exceptions.RequestException as e:
